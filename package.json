@@ -1,0 +1,32 @@
+{
+  "name": "car-city-visualization",
+  "version": "1.0.0",
+  "description": "Data visualization(s) to gain insight into the impact of cars in cities and municipalities in the Netherlands.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiubee/frontend-data.git"
+  },
+  "keywords": [
+    "d3",
+    "visualization",
+    "data-visualization",
+    "d3-visualization"
+  ],
+  "author": "qiubee",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/qiubee/frontend-data/issues"
+  },
+  "homepage": "https://github.com/qiubee/frontend-data#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
