@@ -2,14 +2,14 @@
 
 Data visualization(s) for the Volkskrant to gain insight into the impact of cars in cities and municipalities in the Netherlands.
 
-# Dependencies
+## Dependencies
 
 * Express
 * D3
 
 See **`package.json`** for more information.
 
-# Install
+## Install
 
 Clone the repository and navigate to the directory.
 
@@ -25,12 +25,12 @@ npm install
 npm run start
 ```
 
-# Features
+## Features
 
 *Currently no features added.*
 
-# Resources
+## Resources
 
-# License
+## License
 
 [Apache-2.0 License](LICENSE)
