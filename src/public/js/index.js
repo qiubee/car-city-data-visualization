@@ -17,7 +17,7 @@ function setupMap(width, height) {
 	return path;
 }
 
-async function drawMap(path, data) {
+function drawMap(path, data) {
 	const map = d3.select("svg")
 		.append("g");
 
