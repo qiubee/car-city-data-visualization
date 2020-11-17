@@ -1,15 +1,13 @@
 createChoroplethMap();
 
 async function createChoroplethMap() {
-	const path = setupMap();
-	const provinces = await loadJSON("data/parking_provinces.json");
-	drawMap(path, provinces);
+	const path = setupMap(800, 800);
+	const provincesData = await loadJSON("data/parking_provinces.json");
+	drawMap(path, provincesData);
 }
 
-function setupMap() {
-	const width = 800;
-	const height = 800;
-	const svg = d3.select("svg")
+function setupMap(width, height) {	
+	d3.select("svg")
 		.attr("viewBox", "0 0 " + width + " " + height)
 		.attr("width", width)
 		.attr("height", height);
