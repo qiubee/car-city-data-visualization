@@ -70,6 +70,8 @@ npm run start
 
 ## Resources
 
+* [TopoJSON, GeoJSON, and Projections: Developing Interactive Map Visuals for Web Apps - Medium](https://medium.com/better-programming/topojson-geojson-and-projections-developing-interactive-map-visuals-for-web-apps-79e2d50abb19)
+
 ## License
 
 [Apache-2.0 License](LICENSE)
