@@ -71,6 +71,7 @@ npm run start
 ## Resources
 
 * [TopoJSON, GeoJSON, and Projections: Developing Interactive Map Visuals for Web Apps - Medium](https://medium.com/better-programming/topojson-geojson-and-projections-developing-interactive-map-visuals-for-web-apps-79e2d50abb19)
+* [Converting EPSG projection bounds to a D3.js map - Stackoverflow](https://stackoverflow.com/questions/42259132/converting-epsg-projection-bounds-to-a-d3-js-map)
 
 ## License
 
