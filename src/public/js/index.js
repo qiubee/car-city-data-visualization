@@ -1,10 +1,11 @@
 createChoroplethMap();
 
 async function createChoroplethMap() {
+	const descriptions = ["Totaal aantal parkeerplaatsen", "Totaal aantal parkeerplaatsen die het hele jaar open zijn", "Totaal aantal parkeerplaatsen met de uitgang altijd open"];
 	const path = setupMap(600, 600);
 	const provincesGeometry = await loadJSON("data/parking_provinces_topo.json");
 	const provincesParkingData = provincesGeometry.features;
-	addForm(provincesParkingData);
+	addSelectForm(provincesParkingData, descriptions);
 	drawMap(path, provincesGeometry);
 }
 
@@ -34,36 +35,55 @@ function drawMap(path, data, node=null) {
 	const selected = node ? 
 		node.selectedOptions.item(0).dataset.key : 
 		"parkingTotal";
-	const selectedData = filterOnKey(data.features, selected);
+
+	const selectedData = dataFromKey(data.features, selected);
 
 	const map = d3.select("#map g");
 	const select = d3.select("#map form select");
 		
-	const color = d3.scaleSequentialQuantile([
-		[1000, 5000, 100000],
-		[d3.interpolateBlues()]
-	]);
+	const max = d3.max(selectedData);
+	const n = 10 ** (max.toString().length - 1);
+	const ceil = Math.ceil(max / n) * n;
+	const color = d3.scaleSequential([0, ceil], d3.interpolateBlues);
 
+	// enter
 	map.selectAll("path")
 		.data(data.features)
 		.enter()
 		.append("path")
+		.attr("class", "province")
 		.attr("d", path)
 		.attr("stroke", "#ffffff")
-		.data(selectedData)
+		.append("title");
+
+	// update
+	map.selectAll(".province")
+		.data(data.features)
 		.attr("fill", function (d) {
-			return color(d);
+			return color(d.properties[selected]);
 		})
-		.exit().remove();
+		.selectAll("title")
+			.text(function (d) {
+				const info = d.properties;
+				return `Provincie ${info.province} \n${info[selected]} parkeerplaatsen`;
+		});
 	
+	// exit
+	map.selectAll(".province")
+		.data(data.features)
+		.exit()
+		.remove();
+
+	// uncomment to see exit pattern:
+	// data.features = data.features.slice(0, data.features.length - 1);
+
 	select.on("change", function (event) {
 		drawMap(path, data, event.target);
 	});
 }
 
-function addForm(data) {	
-	const descriptions = ["Totaal aantal parkeerplaatsen", "Totaal aantal parkeerplaatsen die het hele jaar open zijn", "Totaal aantal parkeerplaatsen met de uitgang altijd open"];
-	const names = createCategories(data);
+function addSelectForm(data, descriptions) {	
+	const keys = listOfKeysWithNumberValue(data);
 
 	const select = d3.select("#map")
 		.append("form")
@@ -73,7 +93,7 @@ function addForm(data) {
 		.attr("name", "parking");
 	
 	select.selectAll("option")
-		.data(names)
+		.data(keys)
 		.enter()
 		.append("option")
 		.attr("value", function (d) {
@@ -84,11 +104,11 @@ function addForm(data) {
 		})
 		.data(descriptions)
 		.text(function (d) {
-			return d;
+			return d.toLowerCase();
 		});
 }
 
-function filterOnKey(data, keyToFilter) {
+function dataFromKey(data, keyToFilter) {
 	return data.map(function (feature) {
 		return Object.entries(feature.properties)
 			.reduce(function (acc, property) {
@@ -106,8 +126,8 @@ function filterOnKey(data, keyToFilter) {
 	});
 }
 
-function createCategories(data, descriptions=undefined) {
-	const values = data.map(function (feature) {
+function listOfKeysWithNumberValue(data) {
+	return data.map(function (feature) {
 		return Object.entries(feature.properties)
 			.reduce(function (acc, property) {
 				const key = property[0];
@@ -122,22 +142,6 @@ function createCategories(data, descriptions=undefined) {
 	}).filter(function (a, b, arr) {
 		return arr.indexOf(a) === b;
 	});
-	
-	if (descriptions) {
-		return values.reduce(function (acc, name, i) {
-			for (let j = 0; j < descriptions.length; j++) {
-				const description = descriptions[j];
-				if (i === j) {
-					Object.assign(acc, {
-						[name]: description
-					});
-				}
-			}
-			return acc;
-		}, {});
-	} else {
-		return values;
-	}
 }
 
 async function loadJSON(path) {
