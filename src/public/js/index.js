@@ -45,7 +45,6 @@ function drawMap(path, data, node=null) {
 	const ceil = Math.ceil(max / n) * n;
 	const color = d3.scaleSequential([0, ceil], d3.interpolateBlues);
 
-	// enter
 	map.selectAll("path")
 		.data(data.features)
 		.join(function (enter) {
