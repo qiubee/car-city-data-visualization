@@ -75,6 +75,7 @@ npm run start
 * [Enter, Update, Exit - Medium](https://medium.com/@c_behrens/enter-update-exit-6cafc6014c36)
 * [Thinking with Joins - Mike Bostock](https://bost.ocks.org/mike/join/)
 * [Object Constancy - Mike Bostock](https://bost.ocks.org/mike/constancy/)
+* [d3 Color Legend](https://observablehq.com/@d3/color-legend)
 
 ## License
 
