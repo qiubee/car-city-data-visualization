@@ -3,10 +3,9 @@ createChoroplethMap();
 async function createChoroplethMap() {
 	const descriptions = ["Totaal aantal parkeerplaatsen", "Totaal aantal parkeerplaatsen die het hele jaar open zijn", "Totaal aantal parkeerplaatsen met de uitgang altijd open"];
 	const path = setupMap(600, 600);
-	const provincesGeometry = await loadJSON("data/parking_provinces_topo.json");
-	const provincesParkingData = provincesGeometry.features;
-	addSelectForm(provincesParkingData, descriptions);
-	drawMap(path, provincesGeometry);
+	const provinces = await loadJSON("data/parking_provinces_topo.json");
+	addSelectForm(provinces.features, descriptions);
+	drawMap(path, provinces);
 }
 
 function setupMap(width, height) {	
@@ -49,30 +48,31 @@ function drawMap(path, data, node=null) {
 	// enter
 	map.selectAll("path")
 		.data(data.features)
-		.enter()
-		.append("path")
-		.attr("class", "province")
-		.attr("d", path)
-		.attr("stroke", "#ffffff")
-		.append("title");
-
-	// update
-	map.selectAll(".province")
-		.data(data.features)
-		.attr("fill", function (d) {
-			return color(d.properties[selected]);
-		})
-		.selectAll("title")
-			.text(function (d) {
-				const info = d.properties;
-				return `Provincie ${info.province} \n${info[selected]} parkeerplaatsen`;
+		.join(function (enter) {
+				enter.append("path")
+					.attr("class", "province")
+					.attr("d", path)
+					.attr("stroke", "#ffffff")
+					.attr("fill", function (d) {
+						return color(d.properties[selected]);
+					})
+					.append("title")
+					.text(function (d) {
+						const info = d.properties;
+						return `Provincie ${info.province} \n${info[selected]} parkeerplaatsen`;
 		});
-	
-	// exit
-	map.selectAll(".province")
-		.data(data.features)
-		.exit()
-		.remove();
+		}, function (update) {
+				update.attr("fill", function (d) {
+						return color(d.properties[selected]);
+					})
+					.selectAll("title")
+					.text(function (d) {
+						const info = d.properties;
+						return `Provincie ${info.province}\n${info[selected]} parkeerplaatsen`;
+					});
+		}, function (exit) {
+				exit.remove();
+		});
 
 	// uncomment to see exit pattern:
 	// data.features = data.features.slice(0, data.features.length - 1);
