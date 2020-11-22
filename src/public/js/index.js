@@ -22,7 +22,7 @@ function setupMap(width, height) {
 	
 	const legend = svg.append("g")
 		.attr("class", "legend")
-		.attr("transform", `translate(${legendSize.height}, ${legendSize.height * 3})`);
+		.attr("transform", `translate(${legendSize.height}, ${legendSize.height * 2})`);
 
 	svg.insert("defs", ":first-child")
 		.append("linearGradient")
