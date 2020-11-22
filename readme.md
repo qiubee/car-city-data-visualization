@@ -76,6 +76,7 @@ npm run start
 * [Thinking with Joins - Mike Bostock](https://bost.ocks.org/mike/join/)
 * [Object Constancy - Mike Bostock](https://bost.ocks.org/mike/constancy/)
 * [d3 Color Legend](https://observablehq.com/@d3/color-legend)
+* [Creating a smooth color legend with an SVG gradient](https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient)
 
 ## License
 
