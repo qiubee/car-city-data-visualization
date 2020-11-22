@@ -82,15 +82,15 @@ function drawMap(path, data, node=null) {
 	const max = d3.max(selectedData);
 	const n = 10 ** (max.toString().length - 1);
 	const ceil = Math.ceil(max / n) * n;
-	const color = d3.scaleSequential([0, ceil], d3.interpolatePuBuGn);
+	const color = d3.scaleSequential([0, ceil], d3.interpolateBuPu);
 
 	svg.select("linearGradient")
 		.selectAll("stop")
-		.data(color.range())
+		.data(d3.schemePuBu[3])
 		.enter()
 		.append("stop")
 		.attr("offset", function (d, i) {
-			return i / (color.range().length-1);
+			return i / color.range().length;
 		})
 		.attr("stop-color", function (d) {
 			return d;
