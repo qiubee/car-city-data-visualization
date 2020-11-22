@@ -12,3 +12,8 @@ ul, ol {
 a {
     text-decoration: none;
 }
+
+svg text {
+    font-family: Avenir, Helvetica, Roboto, Ubuntu, Arial, sans-serif;
+    font-size: 0.75rem;
+}
