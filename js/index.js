@@ -9,23 +9,61 @@ async function createChoroplethMap() {
 }
 
 function setupMap(width, height) {	
-	d3.select("#map")
+	const legendSize = {
+		width: width * 0.8,
+		height: 10
+	};
+
+	const svg = d3.select("#map")
 		.insert("svg", ":first-child")
 		.attr("viewBox", "0 0 " + 600 + " " + 600)
 		.attr("width", width)
-		.attr("height", height)
-		.append("g");
+		.attr("height", height);
+	
+	const legend = svg.append("g")
+		.attr("class", "legend")
+		.attr("transform", `translate(${legendSize.height}, ${legendSize.height * 2})`);
+
+	svg.insert("defs", ":first-child")
+		.append("linearGradient")
+		.attr("id", "linear-gradient")
+		.attr("x1", "0%")
+		.attr("y1", "0%")
+		.attr("x2", "100%")
+		.attr("y2", "0%");
+	
+	legend.append("rect")
+		.attr("x", -legendSize.width / 2)
+		.attr("y", 0)
+		.attr("width", legendSize.width / 2)
+		.attr("height", legendSize.height)
+		.attr("transform", `translate(${legendSize.width / 2}, ${legendSize.height})`)
+		.attr("fill", "url(#linear-gradient)");
+
+	legend.append("text")
+		.text("Parkeerplaatsen")
+		.style("font-weight", "500")
+		.style("font-size", "0.85rem");
+
+	const legendScale = d3.scaleLinear([0, 200000], [10, 249]);
+	
+	legend.append("g")
+		.attr("class", "ticks")
+		.attr("transform", "translate(-10, 20)")
+		.call(d3.axisBottom(legendScale).ticks(3))
+		.select(".domain").remove()
+		.style("font-size", "0.85rem");
+	
+	svg.append("g")
+		.attr("class", "map");
 	
 	const scale = width * height / 50;
-	const transLeft = width % height !== 0 ? 
-		-width % scale / (scale / 12500) + (width % height * 0.33) :
-		-width % scale / (scale / 12500);
 
 	const projection = d3.geoMercator()
 		.rotate([5.38763888888889, 0])
 		.center([0, 52.15616055555555])
 		.scale(scale)
-		.translate([transLeft, height / 2]);
+		.translate([-990, height / 2]);
 	const path = d3.geoPath().projection(projection);
 	return path;
 }
@@ -37,14 +75,27 @@ function drawMap(path, data, node=null) {
 
 	const selectedData = dataFromKey(data.features, selected);
 
-	const map = d3.select("#map g");
+	const svg = d3.select("#map svg");
+	const map = d3.select("#map svg g.map");
 	const select = d3.select("#map form select");
 		
 	const max = d3.max(selectedData);
 	const n = 10 ** (max.toString().length - 1);
 	const ceil = Math.ceil(max / n) * n;
-	const color = d3.scaleSequential([0, ceil], d3.interpolateBlues);
+	const color = d3.scaleSequential([0, ceil], d3.interpolateBuPu);
 
+	svg.select("linearGradient")
+		.selectAll("stop")
+		.data(d3.schemePuBu[3])
+		.enter()
+		.append("stop")
+		.attr("offset", function (d, i) {
+			return i / color.range().length;
+		})
+		.attr("stop-color", function (d) {
+			return d;
+		});
+	
 	map.selectAll("path")
 		.data(data.features)
 		.join(function (enter) {
