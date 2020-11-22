@@ -82,7 +82,7 @@ function drawMap(path, data, node=null) {
 	const max = d3.max(selectedData);
 	const n = 10 ** (max.toString().length - 1);
 	const ceil = Math.ceil(max / n) * n;
-	const color = d3.scaleSequential([0, ceil], d3.interpolatePurples);
+	const color = d3.scaleSequential([0, ceil], d3.interpolatePuBuGn);
 
 	svg.select("linearGradient")
 		.selectAll("stop")
