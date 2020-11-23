@@ -1,10 +1,10 @@
 # Auto's in Nederland - Data visualization
 
-Data visualization(s) for the Volkskrant to gain insight into the impact of cars in cities and municipalities in the Netherlands. Using the D3 library to create a interactive datavisualization(s) comparing cities and municipalities with the amount and type of parking facilities in the Netherlands.
+Data visualization(s) to gain insight into the impact of cars in cities and municipalities in the Netherlands. Using the D3 library to create a interactive datavisualization(s) comparing cities, municipalities and provinces with the amount and type of parking facilities in the Netherlands.
 
 ## Concept
 
-A interactive heatmap showing the amount of parking facilities in each province and each municipality. When clicking on a municipality, the parking facilities of the parking area's are shown on the map. Hover over a parking facility to see information about the parking facility: price, type of parking facility. Beside the map are multiple datavisualizations showing the amount of parking places of the facility compared with the total in the municipality, the percentages of each type of parking facility in the municipality, and the relation between the amount of parking facilities and the age distribution of a municipality.
+A interactive choropleth map showing the amount of parking facilities in each province and each municipality. When clicking on a municipality, the parking facilities of the parking area's are shown on the map. Hover over a parking facility to see information about the parking facility: price, type of parking facility. Beside the map are multiple datavisualizations showing the amount of parking places of the facility compared with the total in the municipality, the percentages of each type of parking facility in the municipality, and the relation between the amount of parking facilities and the age distribution of a municipality.
 
 ![Complete sketch of the datavisualization of parking places in the Netherlands](wiki/visualisation-complete.jpg)
 
