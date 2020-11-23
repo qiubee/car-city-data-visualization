@@ -1,6 +1,6 @@
 # Auto's in Nederland - Data visualization
 
-Data visualization(s) to gain insight into the impact of cars in cities and municipalities in the Netherlands. Using the D3 library to create a interactive datavisualization(s) comparing cities, municipalities and provinces with the amount and type of parking facilities in the Netherlands.
+Data visualization(s) to gain insight into the impact of cars in cities and municipalities in the Netherlands. Using the D3 library to create interactive data-visualizations comparing cities, municipalities and provinces with the amount and type of parking facilities in the Netherlands.
 
 ## Concept
 
