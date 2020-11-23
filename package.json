@@ -1,5 +1,5 @@
 {
-  "name": "car-city-visualization",
+  "name": "car-city-data-visualization",
   "version": "1.0.0",
   "description": "Data visualization(s) to gain insight into the impact of cars in cities and municipalities in the Netherlands.",
   "main": "src/server.js",
