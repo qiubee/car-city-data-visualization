@@ -15,6 +15,22 @@ A interactive choropleth map showing the amount of parking facilities in each pr
 
 See [**`package.json`**](package.json) for more information.
 
+## Install
+
+Clone the repository and navigate to the directory.
+
+**Install dependencies:**
+
+```bash
+npm install
+```
+
+**Start server**
+
+```bash
+npm run start
+```
+
 ## Data
 
 To make the datavisualisaton I've used several datasets. I combined them together for a complete dataset with overlapping information of the RDW dataset and location data. The data I've gathered come from the following resources:
@@ -47,22 +63,6 @@ The CBS is the national organization for collecting information about the dutch 
 GeoNames is a website that stores information about geometric map details. The data I've gathered is the complete postal codes data of the Netherlands. The dataset gathered from GeoNames is:
 
 * [GeoNames Data - countries](https://download.geonames.org/export/zip/)
-
-## Install
-
-Clone the repository and navigate to the directory.
-
-**Install dependencies:**
-
-```bash
-npm install
-```
-
-**Start server**
-
-```bash
-npm run start
-```
 
 ## Resources
 
