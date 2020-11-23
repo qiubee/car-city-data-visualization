@@ -64,10 +64,6 @@ npm install
 npm run start
 ```
 
-## Features
-
-*Currently no features added.*
-
 ## Resources
 
 * [TopoJSON, GeoJSON, and Projections: Developing Interactive Map Visuals for Web Apps - Medium](https://medium.com/better-programming/topojson-geojson-and-projections-developing-interactive-map-visuals-for-web-apps-79e2d50abb19)
