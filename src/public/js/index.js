@@ -9,9 +9,10 @@ async function createChoroplethMap() {
 }
 
 function setupMap(width, height) {	
-	const legendSize = {
+	const legend = {
 		width: width * 0.8,
-		height: 10
+		height: 10,
+		title: "Parkeerplaatsen"
 	};
 
 	const svg = d3.select("#map")
@@ -20,42 +21,10 @@ function setupMap(width, height) {
 		.attr("width", width)
 		.attr("height", height);
 	
-	const legend = svg.append("g")
-		.attr("class", "legend")
-		.attr("transform", `translate(${legendSize.height}, ${legendSize.height * 2})`);
-
-	svg.insert("defs", ":first-child")
-		.append("linearGradient")
-		.attr("id", "linear-gradient")
-		.attr("x1", "0%")
-		.attr("y1", "0%")
-		.attr("x2", "100%")
-		.attr("y2", "0%");
-	
-	legend.append("rect")
-		.attr("x", -legendSize.width / 2)
-		.attr("y", 0)
-		.attr("width", legendSize.width / 2)
-		.attr("height", legendSize.height)
-		.attr("transform", `translate(${legendSize.width / 2}, ${legendSize.height})`)
-		.attr("fill", "url(#linear-gradient)");
-
-	legend.append("text")
-		.text("Parkeerplaatsen")
-		.style("font-weight", "500")
-		.style("font-size", "0.85rem");
-
-	const legendScale = d3.scaleLinear([0, 200000], [10, 249]);
-	
-	legend.append("g")
-		.attr("class", "ticks")
-		.attr("transform", "translate(-10, 20)")
-		.call(d3.axisBottom(legendScale).ticks(3))
-		.select(".domain").remove()
-		.style("font-size", "0.85rem");
-	
 	svg.append("g")
 		.attr("class", "map");
+
+	createLegend(svg, legend.width, legend.height, legend.title);
 	
 	const scale = width * height / 50;
 
@@ -82,23 +51,15 @@ function drawMap(path, data, node=null) {
 	const max = d3.max(selectedData);
 	const n = 10 ** (max.toString().length - 1);
 	const ceil = Math.ceil(max / n) * n;
-	const color = d3.scaleSequential([0, ceil], d3.interpolateBuPu);
+	const scale = [0, ceil];
+	const color = d3.scaleSequential(scale, d3.interpolateBuPu);
 
-	svg.select("linearGradient")
-		.selectAll("stop")
-		.data(d3.schemePuBu[3])
-		.enter()
-		.append("stop")
-		.attr("offset", function (d, i) {
-			return i / color.range().length;
-		})
-		.attr("stop-color", function (d) {
-			return d;
-		});
-	
+	updateLegend(svg, scale);
+
 	map.selectAll("path")
 		.data(data.features)
 		.join(function (enter) {
+			// add path and color scale of province
 				enter.append("path")
 					.attr("class", "province")
 					.attr("d", path)
@@ -106,12 +67,14 @@ function drawMap(path, data, node=null) {
 					.attr("fill", function (d) {
 						return color(d.properties[selected]);
 					})
+					// show information on hover
 					.append("title")
 					.text(function (d) {
 						const info = d.properties;
 						return `Provincie ${info.province} \n${info[selected]} parkeerplaatsen`;
 		});
 		}, function (update) {
+			// update color and information of province
 				update.attr("fill", function (d) {
 						return color(d.properties[selected]);
 					})
@@ -121,6 +84,7 @@ function drawMap(path, data, node=null) {
 						return `Provincie ${info.province}\n${info[selected]} parkeerplaatsen`;
 					});
 		}, function (exit) {
+			// remove province(s)
 				exit.remove();
 		});
 
@@ -130,6 +94,54 @@ function drawMap(path, data, node=null) {
 	select.on("change", function (event) {
 		drawMap(path, data, event.target);
 	});
+}
+
+function createLegend(parentSVG, width, height, title) {
+	const legend = parentSVG.append("g")
+		.attr("class", "legend")
+		.attr("transform", `translate(${height}, ${height * 2})`);
+
+	parentSVG.insert("defs", ":first-child")
+		.append("linearGradient")
+		.attr("id", "linear-gradient")
+		.selectAll("stop")
+		.data(d3.schemeBuPu[5])
+		.enter()
+		.append("stop")
+		.attr("offset", function (d, i) {
+			return i / 4;
+		})
+		.attr("stop-color", function (d) {
+			return d;
+		});
+
+	legend.append("rect")
+		.attr("x", -width / 2)
+		.attr("y", 0)
+		.attr("width", width / 2)
+		.attr("height", height)
+		.attr("transform", `translate(${width / 2}, ${height})`)
+		.attr("fill", "url(#linear-gradient)");
+
+	legend.append("text")
+		.text(title)
+		.style("font-weight", "500")
+		.style("font-size", "0.85rem");
+	
+	legend.append("g")
+		.attr("class", "scale");
+}
+
+function updateLegend(parentSVG, scale) {
+	const width = parseInt(parentSVG.select(".legend rect").attr("width")) + 9;
+	const height = parseInt(parentSVG.select(".legend rect").attr("height"));
+	const legendScale = d3.scaleLinear(scale, [height, width]);
+	
+	parentSVG.select(".legend .scale")
+		.attr("transform", "translate(-10, 20)")
+		.call(d3.axisBottom(legendScale).ticks(3))
+		.select(".domain").remove()
+		.style("font-size", "0.85rem");
 }
 
 function addSelectForm(data, descriptions) {	
