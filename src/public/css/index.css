@@ -50,6 +50,11 @@ article svg ~ p {
     margin-bottom: 1rem;
 }
 
+article svg ~ p span {
+    font-weight: bold;
+    color: #4f5279;
+}
+
 svg text {
     font-family: Avenir, Helvetica, Roboto, Ubuntu, Arial, sans-serif;
     font-size: 0.75rem;
